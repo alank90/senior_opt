@@ -1,16 +1,28 @@
 <template>
   <h1>Senior Options</h1>
 
-  <button @click="getRows">Get Rows</button>
+  <button @click="getSSValues">Get Data</button>
+
+  <div>{{ ssData }}</div>
 </template>
 
 <script setup>
-  // ========= Vars ======================= //
+  import { useFetch } from "../modules/useFetch.js";
 
-  async function getRows() {
-    const ssRows = await fetch(
-      "https://script.google.com/macros/s/AKfycbxAyycSrzihox8RpI2C_SNNnYyjrg6MTe-1nbvhvCZwJUyLPjObwo5FC4c9j44zOm0WPQ/exec"
-    );
-    console.log(ssRows);
-  }
+  // ========= Variable Declarations ======================= //
+  const API_KEY = import.meta.env.VITE_API_SS_KEY;
+  const ssID = "12NuSzSyIIoVf5oQv2YyjLyGKYe4Pyyme0oPPj7G2pK0";
+  const ssURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/values/students!A2:D10?key=${API_KEY}`;
+
+  // Fetch the SS
+  // eslint-disable-next-line no-unused-vars
+
+  const { data: ssData, loadingState, error } = useFetch(ssURL);
 </script>
+
+<style scoped>
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+</style>
