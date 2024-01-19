@@ -1,4 +1,4 @@
-<template :key="componentKey">
+<template>
   <h1>Senior Options</h1>
 
   <button @click="retrieveSSData">Get Data</button>
