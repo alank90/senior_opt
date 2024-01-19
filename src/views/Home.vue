@@ -1,9 +1,9 @@
-<template>
+<template :key="componentKey">
   <h1>Senior Options</h1>
 
-  <button @click="buttonClicked = !buttonClicked">Get Data</button>
+  <button @click="retrieveSSData">Get Data</button>
 
-  <div v-if="ssData && buttonClicked">{{ ssData.values[3][2] }}</div>
+  <div v-if="ssData">{{ ssData.data.range }}</div>
 </template>
 
 <script setup>
@@ -14,13 +14,13 @@
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
   const ssID = "12NuSzSyIIoVf5oQv2YyjLyGKYe4Pyyme0oPPj7G2pK0";
   const ssURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/values/students!A2:D10?key=${API_KEY}`;
-  let buttonClicked = ref(false);
+  const ssData = ref(null);
 
   // Fetch the SS data
-  // eslint-disable-next-line no-unused-vars
-  const { data: ssData, loadingState, error } = useFetch(ssURL);
 
-  
+  const retrieveSSData = async () => {
+    ssData.value = await useFetch(ssURL);
+  };
 </script>
 
 <style scoped>
