@@ -1,0 +1,15 @@
+:root {
+    --main-dark: #212221;
+    --blue: #1181b2;
+    --light-blue: #ddedf4;
+    --main-bg: #edeef0;
+  }
+  
+  body {
+    background-color: var(--main-bg);
+  }
+  
+  p {
+    color: var(--main-dark);
+  }
+  
