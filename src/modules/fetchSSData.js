@@ -8,7 +8,7 @@
 export async function fetchSSData(url) {
   // ======= Variable Declarations ============ //
   let data = null;
-
+  
   try {
     const res = await fetch(url);
 
