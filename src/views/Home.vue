@@ -75,6 +75,7 @@
           </tr>
         </template>
       </tbody>
+
     </table>
   </div>
 </template>
@@ -82,6 +83,7 @@
 <script setup>
   import { ref } from "vue";
   import { fetchSSData } from "../modules/fetchSSData.js";
+ // import TablePagination from "@/components/TablePagination.vue";
 
   // ========= Variable Declarations ======================= //
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
