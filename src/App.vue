@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img alt="SHS Building" src="./assets/img/shs_building.webp" />
 
   <!-- =============== route outlet ============================================= -->
   <!-- component matched by the route will render here ========================== -->
@@ -13,6 +13,8 @@
 </template>
 
 <style>
+  @import "/src/assets/css/style.css";
+
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -20,5 +22,9 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+
+  img[alt="SHS Building"] {
+    max-width: 300px;
   }
 </style>

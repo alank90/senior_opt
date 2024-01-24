@@ -2,7 +2,7 @@
     --main-dark: #212221;
     --blue: #1181b2;
     --light-blue: #ddedf4;
-    --main-bg: #edeef0;
+    --main-bg: #f35f541d;
   }
   
   body {
@@ -13,3 +13,7 @@
     color: var(--main-dark);
   }
   
+  img {
+    width: 100%;
+    height: auto;
+  }

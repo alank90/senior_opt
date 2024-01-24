@@ -2,41 +2,48 @@
   <h1>Internships List</h1>
   <h2>A School</h2>
 
-  <form>
-    <ul>
-      <li>
-        <label for="sheetNames">Select an Internship List to View:</label>
-        <select name="sheets" id="sheetNames" autofocus required>
-          <option value="">--Please choose a sheet--</option>
-          <option value="Animal Care">Animal Care</option>
-          <option value="Athletics">Athletics</option>
-          <option value="Finance/Realty">Finance/Realty</option>
-          <option value="Food Services/Baking">Food Services/Baking</option>
-          <option value="Legal/Non profit/outreach/religious">
-            Legal/Non profit/outreach/religious
-          </option>
-          <option value="Marketing/editorial/books">
-            Marketing/editorial/books
-          </option>
-          <option value="Mechanics/Enginering/Construction">
-            Mechanics/Enginering/Construction
-          </option>
-          <option value=" Media/art/design">Media/art/design</option>
-          <option value="Medical">Medical</option>
-          <option value="Misc.">Misc.</option>
-          <option value="Music/Drama/Dance">Music/Drama/Dance</option>
-          <option value="Other education/museum">Other education/museum</option>
-          <option value="Scarsdale School District">
-            Scarsdale School District
-          </option>
-          <option value="Retail/sales">Retail/sales</option>
-        </select>
-      </li>
-      <li>
-        <label for="range">Sheet Range:</label>
-        <input type="text" id="range" />
-      </li>
-    </ul>
+  <form id="form">
+    <label for="sheetNames">Select an Internship List to View:</label>
+    <select name="sheets" id="sheetNames" autofocus required>
+      <option value="">--Please choose a sheet--</option>
+      <option value="Animal Care">Animal Care</option>
+      <option value="Athletics">Athletics</option>
+      <option value="Finance/Realty">Finance/Realty</option>
+      <option value="Food Services/Baking">Food Services/Baking</option>
+      <option value="Legal/Non profit/outreach/religious">
+        Legal/Non profit/outreach/religious
+      </option>
+      <option value="Marketing/editorial/books">
+        Marketing/editorial/books
+      </option>
+      <option value="Mechanics/Enginering/Construction">
+        Mechanics/Enginering/Construction
+      </option>
+      <option value=" Media/art/design">Media/art/design</option>
+      <option value="Medical">Medical</option>
+      <option value="Misc.">Misc.</option>
+      <option value="Music/Drama/Dance">Music/Drama/Dance</option>
+      <option value="Other education/museum">Other education/museum</option>
+      <option value="Scarsdale School District">
+        Scarsdale School District
+      </option>
+      <option value="Retail/sales">Retail/sales</option>
+    </select>
+
+    <label for="range">Sheet Range (optional):</label>
+    <input
+      type="text"
+      name="input-range1"
+      id="input-range1"
+      autocapitalize="characters"
+    />
+    <span id="spanSemi">:</span>
+    <input
+      type="text"
+      name="input-range2"
+      id="input-range2"
+      autocapitalize="characters"
+    />
 
     <button @click.prevent="getSSData">Get Data</button>
   </form>
@@ -81,7 +88,7 @@
 
   const ssID = "1H6gVpXqtmHJBHs-ZZiEHDraxGsC0KbX9owZdt6AzsF8";
   let sheet = "";
-  const ssRange = "!A1:H12";
+  let ssRange = "";
   const ssData = ref(null);
 
   let loadingState = false;
@@ -98,16 +105,31 @@
   const getSSData = async () => {
     loadingState = true;
 
-    const formSheetSelectElement = document.getElementById("sheetNames");
-    let collection = formSheetSelectElement.selectedOptions;
-    sheet = collection[0].value;
+    // Get the form element values and store them in our variables
+    const form = document.getElementById("form");
+    const formData = new FormData(form);
+    sheet = formData.get("sheets");
+    const a1NotationValue1 = formData.get("input-range1");
+    const a1NotationValue2 = formData.get("input-range2");
+    const regex = /^(?:[A-Z,a-z]{1,3}[0-9]{1,7})?$/;
 
+    // ---------- Do some input validation ------------ //
     // Check if a sheet was chosen
     if (!sheet) {
       alert("Please pick a sheet to view.");
       return;
     }
-    
+    // Check input and see if its valid A1 notation
+    if (!regex.test(a1NotationValue1)) {
+      alert("Sorry. Invalid A1 notation used.");
+      return;
+    } else if (a1NotationValue1 === "") {
+      ssRange = "";
+    } else {
+      ssRange = `!${a1NotationValue1}:${a1NotationValue2}`;
+    }
+    // -------- End input validation ------------------ //
+
     // Escape URI if special characters in the sheet name.
     const escapedSheet = encodeURIComponent(sheet);
     const ssURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/values/${escapedSheet}${ssRange}?key=${API_KEY}`;
@@ -146,6 +168,15 @@
   }
 
   /* ------------Form stylings ------------- */
+  form {
+    display: inline;
+    /* Center the form on the page */
+    /* Form outline */
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 1em;
+  }
+
   button,
   input,
   select,
@@ -158,35 +189,22 @@
   textarea,
   select,
   button {
-    width: 150px;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
   }
-
-  form {
-    /* Center the form on the page */
-    margin: 0 auto;
-    width: 400px;
-    /* Form outline */
-    padding: 1em;
-    border: 1px solid #ccc;
-    border-radius: 1em;
+  #input-range1,
+  #input-range2 {
+    width: 35px;
+    margin: auto 3px;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  #spanSemi {
+    font-weight: 650;
   }
-
-  form li + li {
-    margin-top: 1em;
-  }
-
   label {
     /* Uniform size & alignment */
-    display: block;
+    display: inline-block;
     font:
       0.8rem "Fira Sans",
       sans-serif;
@@ -197,6 +215,10 @@
   input,
   label {
     margin: 0.4rem 0;
+  }
+
+  label:not(:first-child) {
+    margin-left: 9px;
   }
 
   select {
@@ -233,12 +255,9 @@
     height: 5em;
   }
 
-  .button {
-    /* Align buttons with the text fields */
-    padding-left: 90px; /* same size as the label elements */
-  }
-
   button {
+    width: 75px;
+    height: 25px;
     /* This extra margin represent roughly the same space as the space
      between the labels and their text fields */
     margin-left: 0.5em;
@@ -253,7 +272,7 @@
     table-layout: auto;
     border: 3px solid #000;
     border-radius: 5px;
-    margin-left: 15px;
+    margin: 15px auto;
     width: 100%;
   }
 
