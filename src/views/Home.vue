@@ -75,7 +75,6 @@
           </tr>
         </template>
       </tbody>
-
     </table>
   </div>
 </template>
@@ -83,7 +82,7 @@
 <script setup>
   import { ref } from "vue";
   import { fetchSSData } from "../modules/fetchSSData.js";
- // import TablePagination from "@/components/TablePagination.vue";
+  import { usePagination } from "../modules/usePagination.js";
 
   // ========= Variable Declarations ======================= //
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
@@ -94,6 +93,8 @@
   const ssData = ref(null);
 
   let loadingState = false;
+  const rowsPerPage = 10;
+  let currentPage = ref(2);
   // ======== End Variable Declarations ==================== //
 
   // ================================================================= //
@@ -139,7 +140,16 @@
     // Fetch SS data
     ssData.value = await fetchSSData(ssURL);
     loadingState = false;
+
+    // Create pagination for the sheets table
+    const { paginatedArray, numberOfPages } = usePagination({
+      rowsPerPage,
+      ssData,
+      currentPage,
+    });
+    console.log(paginatedArray.value);
   };
+
   // ================================================================= //
   // ============ End of Methods Section ============================= //
   // ================================================================= //
