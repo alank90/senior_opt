@@ -2,7 +2,7 @@ import { computed, ref } from "vue";
 
 export function usePagination(config) {
   // ======= Vars ========== //
-  const rowsPerPage = config.rowsPerPage.value || ref(100);
+  const rowsPerPage = config.rowsPerPage.value || ref(10);
 
   const paginatedArray = computed(() =>
     config.ssData.value.data.values.slice(
@@ -14,9 +14,9 @@ export function usePagination(config) {
   const numberOfPages = computed(() =>
     Math.ceil((config.ssData.value.data.values.length || 0) / rowsPerPage)
   );
-  console.log(numberOfPages.value);
+
   return {
     paginatedArray,
-    numberOfPages
+    numberOfPages,
   };
 }

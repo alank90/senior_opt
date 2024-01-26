@@ -81,9 +81,8 @@
   <table-pagination
     class="pagination-component"
     v-model="currentPage"
-    :numberOfPages="pagesInTable"
-    ></table-pagination
-  >
+    :numberOfPages="numberOfPagesOuter"
+  ></table-pagination>
 </template>
 
 <script setup>
@@ -103,7 +102,7 @@
   let loadingState = false;
   const rowsPerPage = ref(7);
   const currentPage = ref(1);
-  let pagesInTable = ref(null);
+  let numberOfPagesOuter = ref(null);
   // ======== End Variable Declarations ==================== //
 
   // ================================================================= //
@@ -156,8 +155,8 @@
       ssData,
       currentPage,
     });
-    pagesInTable.value = numberOfPages;
-    console.log(pagesInTable.value);
+    console.log(numberOfPages.value);
+    numberOfPagesOuter.value = numberOfPages;
   };
 
   // ================================================================= //

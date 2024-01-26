@@ -12,7 +12,7 @@
         <span class="page-link">&laquo;</span>
       </li>
       <li
-        v-for="index in pages"
+        v-for="index in numberOfPages"
         :key="index"
         :aria-label="'go to page ' + index"
         class="page-item"
@@ -27,7 +27,7 @@
           {{ index }}
         </div>
       </li>
-       <li
+      <li
         class="page-item"
         :class="{
           disabled: currentPage === pages || !pages,
@@ -42,12 +42,11 @@
 </template>
 
 <script setup>
-  import { toRefs } from "vue";
-
   // ============ Variables ========================== //
   const props = defineProps({
     numberOfPages: {
       required: true,
+      type: Number,
     },
     modelValue: {
       required: true,
@@ -55,15 +54,16 @@
     },
   });
 
-  const { numberOfPages, modelValue: currentPage } = toRefs(props);
-  let pages = numberOfPages.value;
+  const { numberOfPages, modelValue: currentPage } = props;
   const emit = defineEmits(["update:modelValue"]);
-  const setCurrentPage = (number) => {
-    emit("update:modelValue", number);
-  };
+
   // ======= End variable declarations ================= //
 
   // ============= Methods ======================== //
+  const setCurrentPage = (number) => {
+    emit("update:modelValue", number);
+  };
+  
   const previous = () => {
     if (currentPage.value === 1) return;
     emit("update:modelValue", currentPage.value - 1);
