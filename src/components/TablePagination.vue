@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-container" aria-label="row pagination">
-    <ul v-if="numberOfPages" class="pagination">
+    <ul v-if="numberOfPages > 1" class="pagination">
       <li
         class="page-item"
         aria-label="go to previous page"
@@ -63,7 +63,7 @@
   const setCurrentPage = (number) => {
     emit("update:modelValue", number);
   };
-  
+
   const previous = () => {
     if (currentPage.value === 1) return;
     emit("update:modelValue", currentPage.value - 1);
