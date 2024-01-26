@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-container" aria-label="row pagination">
-    <ul v-if="numberOfPages >= 1" class="pagination">
+    <ul v-if="numberOfPages" class="pagination">
       <li
         class="page-item"
         aria-label="go to previous page"
@@ -12,7 +12,7 @@
         <span class="page-link">&laquo;</span>
       </li>
       <li
-        v-for="index in numberOfPages"
+        v-for="index in pages"
         :key="index"
         :aria-label="'go to page ' + index"
         class="page-item"
@@ -27,10 +27,10 @@
           {{ index }}
         </div>
       </li>
-      <li
+       <li
         class="page-item"
         :class="{
-          disabled: currentPage === numberOfPages || !numberOfPages,
+          disabled: currentPage === pages || !pages,
         }"
         aria-label="go to next page"
         @click="next()"
@@ -56,6 +56,7 @@
   });
 
   const { numberOfPages, modelValue: currentPage } = toRefs(props);
+  let pages = numberOfPages.value;
   const emit = defineEmits(["update:modelValue"]);
   const setCurrentPage = (number) => {
     emit("update:modelValue", number);

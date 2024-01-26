@@ -77,11 +77,19 @@
       </tbody>
     </table>
   </div>
+
+  <table-pagination
+    class="pagination-component"
+    v-model="currentPage"
+    :numberOfPages="pagesInTable"
+    ></table-pagination
+  >
 </template>
 
 <script setup>
   import { ref } from "vue";
   import { fetchSSData } from "../modules/fetchSSData.js";
+  import TablePagination from "@/components/TablePagination.vue";
   import { usePagination } from "../modules/usePagination.js";
 
   // ========= Variable Declarations ======================= //
@@ -93,8 +101,9 @@
   const ssData = ref(null);
 
   let loadingState = false;
-  const rowsPerPage = 10;
-  let currentPage = ref(2);
+  const rowsPerPage = ref(7);
+  const currentPage = ref(1);
+  let pagesInTable = ref(null);
   // ======== End Variable Declarations ==================== //
 
   // ================================================================= //
@@ -142,12 +151,13 @@
     loadingState = false;
 
     // Create pagination for the sheets table
-    const { paginatedArray, numberOfPages } = usePagination({
+    const { paginatedArray: ssDataArray, numberOfPages } = usePagination({
       rowsPerPage,
       ssData,
       currentPage,
     });
-    console.log(paginatedArray.value);
+    pagesInTable.value = numberOfPages;
+    console.log(pagesInTable.value);
   };
 
   // ================================================================= //
