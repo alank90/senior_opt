@@ -42,6 +42,7 @@
 </template>
 
 <script setup>
+  import { ref } from "vue";
   // ============ Variables ========================== //
   const props = defineProps({
     numberOfPages: {
@@ -53,8 +54,7 @@
       type: Number,
     },
   });
-
-  const { numberOfPages, modelValue: currentPage } = props;
+  let currentPage = ref(props.modelValue);
   const emit = defineEmits(["update:modelValue"]);
 
   // ======= End variable declarations ================= //
@@ -70,7 +70,7 @@
   };
 
   const next = () => {
-    if (currentPage.value >= numberOfPages.value) return;
+    if (currentPage.value >= props.numberOfPages.value) return;
     emit("update:modelValue", currentPage.value + 1);
   };
   // ============= End  Methods ==================== //

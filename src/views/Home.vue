@@ -150,13 +150,14 @@
     loadingState = false;
 
     // Create pagination for the sheets table
-    const { paginatedArray: ssDataArray, numberOfPages } = usePagination({
-      rowsPerPage,
-      ssData,
-      currentPage,
-    });
-    console.log(numberOfPages.value);
-    numberOfPagesOuter.value = numberOfPages;
+    const { paginatedArray: paginatedSSDataArray, numberOfPages } =
+      usePagination({
+        rowsPerPage,
+        ssData,
+        currentPage,
+      });
+    console.log(paginatedSSDataArray.value);
+    numberOfPagesOuter.value = numberOfPages.value;
   };
 
   // ================================================================= //
