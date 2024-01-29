@@ -58,10 +58,10 @@
   </div>
   <div v-else-if="ssData?.data.values" class="container">
     <table>
-      <thead>
+      <thead v-if="currentPage === 1">
         <tr>
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
-          <th v-for="colNames in ssData.data.values[0]">{{ colNames }}</th>
+          <th v-for="colNames in paginatedSSDataArray[0]">{{ colNames }}</th>
         </tr>
       </thead>
 
@@ -71,7 +71,7 @@
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
           <tr>
             <!-- eslint-disable-next-line vue/require-v-for-key  -->
-            <td v-for="cellData in ssData.data.values[n]">{{ cellData }}</td>
+            <td v-for="cellData in paginatedSSDataArray[n]">{{ cellData }}</td>
           </tr>
         </template>
       </tbody>
@@ -80,8 +80,8 @@
 
   <table-pagination
     class="pagination-component"
-    v-model="currentPage"
     :numberOfPages="numberOfPagesOuter"
+    @update="updateTableData"
   ></table-pagination>
 </template>
 
@@ -103,6 +103,7 @@
   const rowsPerPage = ref(7);
   const currentPage = ref(1);
   let numberOfPagesOuter = ref(null);
+  let paginatedSSDataArray = ref(null);
   // ======== End Variable Declarations ==================== //
 
   // ================================================================= //
@@ -150,14 +151,26 @@
     loadingState = false;
 
     // Create pagination for the sheets table
-    const { paginatedArray: paginatedSSDataArray, numberOfPages } =
-      usePagination({
-        rowsPerPage,
-        ssData,
-        currentPage,
-      });
-    console.log(paginatedSSDataArray.value);
+    const { paginatedArray, numberOfPages } = usePagination({
+      rowsPerPage,
+      ssData,
+      currentPage,
+    });
+    paginatedSSDataArray.value = paginatedArray.value;
     numberOfPagesOuter.value = numberOfPages.value;
+  };
+
+  /**
+   * Description - Function triggered when page number clicked
+   *  in page button from emit event update.
+   * @param - page number clicked on menu
+   */
+  const updateTableData = (number) => {
+    paginatedSSDataArray.value = ssData.value.data.values.slice(
+      (number - 1) * rowsPerPage.value,
+      number * rowsPerPage.value
+    );
+    currentPage.value = number;
   };
 
   // ================================================================= //

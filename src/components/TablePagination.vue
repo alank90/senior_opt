@@ -11,6 +11,8 @@
       >
         <span class="page-link">&laquo;</span>
       </li>
+
+      <!--- Generate page buttons -->
       <li
         v-for="index in numberOfPages"
         :key="index"
@@ -27,6 +29,8 @@
           {{ index }}
         </div>
       </li>
+      <!-- End generate page buttons -->
+
       <li
         class="page-item"
         :class="{
@@ -55,13 +59,14 @@
     },
   });
   let currentPage = ref(props.modelValue);
-  const emit = defineEmits(["update:modelValue"]);
+  const emit = defineEmits(["update"]);
 
   // ======= End variable declarations ================= //
 
   // ============= Methods ======================== //
   const setCurrentPage = (number) => {
-    emit("update:modelValue", number);
+    console.log(number);
+    emit("update", number);
   };
 
   const previous = () => {
