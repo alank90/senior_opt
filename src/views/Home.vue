@@ -58,20 +58,33 @@
   </div>
   <div v-else-if="ssData?.data.values" class="container">
     <table>
-      <thead v-if="currentPage === 1">
+      <thead >
         <tr>
+          <th></th>
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
-          <th v-for="colNames in paginatedSSDataArray[0]">{{ colNames }}</th>
+          <th v-for="colNames in ssData.data.values[0]">{{ colNames }}</th>
         </tr>
       </thead>
 
       <tbody>
         <!-- eslint-disable-next-line vue/require-v-for-key  -->
-        <template v-for="n in ssData.data.values.length">
+        <template v-for="n in paginatedSSDataArray.length">
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
-          <tr>
+          <tr v-if="currentPage === 1">
+            <td>{{ n !== 7 ? (currentPage - 1) * 7 + n : "" }}.</td>
             <!-- eslint-disable-next-line vue/require-v-for-key  -->
-            <td v-for="cellData in paginatedSSDataArray[n]">{{ cellData }}</td>
+            <td v-for="cellData in paginatedSSDataArray[n]">
+              {{ cellData }}
+            </td>
+          </tr>
+          <!-- Else skip 1st row in array because is column names-->
+          <!-- eslint-disable-next-line vue/require-v-for-key  -->
+          <tr v-else-if="currentPage > 1">
+            <td>{{ (currentPage - 1) * 7 + (n - 1) }}.</td>
+            <!-- eslint-disable-next-line vue/require-v-for-key  -->
+            <td v-for="cellData in paginatedSSDataArray[n - 1]">
+              {{ cellData }}
+            </td>
           </tr>
         </template>
       </tbody>
@@ -81,6 +94,7 @@
   <table-pagination
     class="pagination-component"
     :numberOfPages="numberOfPagesOuter"
+    :propCurrentPage="currentPage"
     @update="updateTableData"
   ></table-pagination>
 </template>
@@ -166,6 +180,7 @@
    * @param - page number clicked on menu
    */
   const updateTableData = (number) => {
+    console.log(number);
     paginatedSSDataArray.value = ssData.value.data.values.slice(
       (number - 1) * rowsPerPage.value,
       number * rowsPerPage.value
@@ -200,6 +215,10 @@
     max-width: 1200px;
     overflow: scroll;
     margin: 0 auto 20px;
+  }
+  /* --- This is to make first page's last row invisible because it contain's no data */
+  tr:has(:only-child) {
+    display: none;
   }
 
   /* ------------Form stylings ------------- */

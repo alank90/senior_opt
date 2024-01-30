@@ -6,7 +6,7 @@
         aria-label="go to previous page"
         @click="previous()"
         :class="{
-          disabled: currentPage === 1,
+          disabled: propCurrentPage === 1,
         }"
       >
         <span class="page-link">&laquo;</span>
@@ -23,7 +23,7 @@
         <div
           class="page-link"
           :class="{
-            'active-page': currentPage === index,
+            'active-page': propCurrentPage === index,
           }"
         >
           {{ index }}
@@ -34,7 +34,7 @@
       <li
         class="page-item"
         :class="{
-          disabled: currentPage === pages || !pages,
+          disabled: propCurrentPage === numberOfPages,
         }"
         aria-label="go to next page"
         @click="next()"
@@ -46,19 +46,18 @@
 </template>
 
 <script setup>
-  import { ref } from "vue";
   // ============ Variables ========================== //
   const props = defineProps({
     numberOfPages: {
       required: true,
       type: Number,
     },
-    modelValue: {
+    propCurrentPage: {
       required: true,
       type: Number,
     },
   });
-  let currentPage = ref(props.modelValue);
+
   const emit = defineEmits(["update"]);
 
   // ======= End variable declarations ================= //
@@ -70,13 +69,13 @@
   };
 
   const previous = () => {
-    if (currentPage.value === 1) return;
-    emit("update:modelValue", currentPage.value - 1);
+    if (props.propCurrentPage === 1) return;
+    emit("update", props.propCurrentPage - 1);
   };
 
   const next = () => {
-    if (currentPage.value >= props.numberOfPages.value) return;
-    emit("update:modelValue", currentPage.value + 1);
+    if (props.propCurrentPage >= props.numberOfPages) return;
+    emit("update", props.propCurrentPage + 1);
   };
   // ============= End  Methods ==================== //
 </script>
