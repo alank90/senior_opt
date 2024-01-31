@@ -1,19 +1,24 @@
 :root {
-    --main-dark: #212221;
-    --blue: #1181b2;
-    --light-blue: #ddedf4;
-    --main-bg: #f35f541d;
-  }
-  
-  body {
-    background-color: var(--main-bg);
-  }
-  
-  p {
-    color: var(--main-dark);
-  }
-  
-  img {
-    width: 100%;
-    height: auto;
-  }
+  --main-dark: #212221;
+  --blue: #1181b2;
+  --light-blue: #ddedf4;
+  --main-bg: #4d5867;
+}
+
+body {
+  background: rgb(196, 198, 200);
+  background: linear-gradient(
+    180deg,
+    rgba(196, 198, 200, 1) 0%,
+    rgba(237, 240, 240, 1) 100%
+  );
+}
+
+p {
+  color: var(--main-dark);
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

@@ -128,7 +128,7 @@
     border: none;
   }
   .active-page {
-    background-color: #60d394 !important;
+    background-color: #5d6878 !important;
     color: white !important;
   }
   .active-page:hover {

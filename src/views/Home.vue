@@ -58,11 +58,13 @@
   </div>
   <div v-else-if="ssData?.data.values" class="container">
     <table>
-      <thead >
+      <thead>
         <tr>
           <th></th>
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
-          <th v-for="colNames in ssData.data.values[0]">{{ colNames }}</th>
+          <th v-for="colNames in ssData.data.values[0]">
+            {{ colNames }}
+          </th>
         </tr>
       </thead>
 
@@ -194,6 +196,8 @@
 </script>
 
 <style scoped>
+  @import "../assets/css/table.css";
+
   h1 {
     font-size: 2rem;
     font-weight: 600;
@@ -206,19 +210,11 @@
     margin: 0 0 3px 0;
   }
 
-  th {
-    border: 1px solid #000;
-  }
-
   .container {
     width: 90vw;
     max-width: 1200px;
     overflow: scroll;
     margin: 0 auto 20px;
-  }
-  /* --- This is to make first page's last row invisible because it contain's no data */
-  tr:has(:only-child) {
-    display: none;
   }
 
   /* ------------Form stylings ------------- */
@@ -318,43 +314,4 @@
   }
 
   /* -------- End Form stylings ------------ */
-
-  /* -------- Table stylings ------------ */
-  table {
-    border-collapse: collapse;
-    border-spacing: 5px;
-    table-layout: auto;
-    border: 3px solid #000;
-    border-radius: 5px;
-    margin: 15px auto;
-    width: 100%;
-  }
-
-  thead {
-    border-top: 4px solid #000;
-  }
-
-  th,
-  td {
-    max-width: 10%;
-    text-align: center;
-    vertical-align: middle;
-    border-collapse: collapse;
-    padding: 0.3em;
-    font-weight: 500;
-    font-size: 0.7rem;
-    caption-side: bottom;
-  }
-
-  th {
-    text-align: left;
-    vertical-align: middle;
-    font-size: 1.1rem;
-  }
-
-  td {
-    border: 1px solid #000;
-  }
-
-  /* -------- End Table stylings -------------*/
 </style>
