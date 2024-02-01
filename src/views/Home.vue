@@ -106,6 +106,7 @@
   import { fetchSSData } from "../modules/fetchSSData.js";
   import TablePagination from "@/components/TablePagination.vue";
   import { usePagination } from "../modules/usePagination.js";
+  import moveTitleImage from "@/modules/moveTitleImage.js";
 
   // ========= Variable Declarations ======================= //
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
@@ -132,6 +133,7 @@
    */
   const getSSData = async () => {
     loadingState = true;
+    moveTitleImage();
 
     // Get the form element values and store them in our variables
     const form = document.getElementById("form");
@@ -182,7 +184,6 @@
    * @param - page number clicked on menu
    */
   const updateTableData = (number) => {
-    console.log(number);
     paginatedSSDataArray.value = ssData.value.data.values.slice(
       (number - 1) * rowsPerPage.value,
       number * rowsPerPage.value
@@ -207,13 +208,18 @@
   h2 {
     font-size: 1.4rem;
     font-weight: 550;
-    margin: 0 0 3px 0;
+    margin: 0 0 5px 0;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--heading-font);
   }
 
   .container {
     width: 90vw;
     max-width: 1200px;
-    overflow: scroll;
+    overflow: auto;
     margin: 0 auto 20px;
   }
 
@@ -223,7 +229,7 @@
     /* Center the form on the page */
     /* Form outline */
     padding: 1em;
-    border: 1px solid #ccc;
+    border: 1px solid #636060;
     border-radius: 1em;
   }
 

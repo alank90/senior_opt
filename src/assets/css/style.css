@@ -3,6 +3,8 @@
   --blue: #1181b2;
   --light-blue: #ddedf4;
   --main-bg: #4d5867;
+  --heading-font: "Cormorant", serif;
+  --letter-font: "Playfair Display", serif;
 }
 
 body {
@@ -16,6 +18,7 @@ body {
 
 p {
   color: var(--main-dark);
+  font-family: var(--letter-font);
 }
 
 img {

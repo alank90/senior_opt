@@ -64,7 +64,6 @@
 
   // ============= Methods ======================== //
   const setCurrentPage = (number) => {
-    console.log(number);
     emit("update", number);
   };
 

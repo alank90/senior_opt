@@ -1,16 +1,20 @@
-<script setup>
-  // This starter template is using Vue 3 <script setup> SFCs
-  // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-</script>
-
 <template>
-  <img alt="SHS Building" src="./assets/img/shs_building.webp" />
+  <app-navbar></app-navbar>
+  <img
+    alt="SHS Building"
+    id="titleImage"
+    src="./assets/img/shs_building_small.webp"
+  />
 
   <!-- =============== route outlet ============================================= -->
   <!-- component matched by the route will render here ========================== -->
   <router-view></router-view>
   <!-- =============== End route outlet ========================================= -->
 </template>
+
+<script setup>
+  import appNavbar from "/src/components/app-navbar.vue";
+</script>
 
 <style>
   @import "/src/assets/css/style.css";
@@ -21,10 +25,26 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
+  }
+
+  .moveImage {
+    opacity: 0;
+    transition: opacity 0.2s fadeout;
+  }
+
+  .moveApp {
+    transform: translateY(-15%);
+    transition-duration: .4s;
   }
 
   img[alt="SHS Building"] {
     max-width: 300px;
+  }
+
+  @media only screen and (max-width: 760px) {
+    .moveApp {
+      transform: translateY(-8%);
+      transition-duration: 1.2s;
+    }
   }
 </style>
