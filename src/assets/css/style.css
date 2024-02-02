@@ -1,7 +1,5 @@
 :root {
   --main-dark: #212221;
-  --blue: #1181b2;
-  --light-blue: #ddedf4;
   --main-bg: #4d5867;
   --heading-font: "Cormorant", serif;
   --letter-font: "Playfair Display", serif;
@@ -10,11 +8,38 @@
 body {
   background: rgb(196, 198, 200);
   background: linear-gradient(
-    180deg,
+    to bottom,
     rgba(196, 198, 200, 1) 0%,
-    rgba(237, 240, 240, 1) 100%
+    rgba(238, 235, 235, 1) 99%
   );
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
+
+/* Scrollbar stylings */
+/* Works on Firefox */
+* {
+  scrollbar-width: thick;
+  scrollbar-color: #5d6878 #f0f3f5;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f3f5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #5d6878;
+  border-radius: 20px;
+  border: 3px solid #f0f3f5;
+}
+/* End scrollbar stylings */
 
 p {
   color: var(--main-dark);

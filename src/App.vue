@@ -29,12 +29,12 @@
 
   .moveImage {
     opacity: 0;
-    transition: opacity 0.2s fadeout;
+    transition: opacity 0.4s ease-out;
   }
 
   .moveApp {
     transform: translateY(-15%);
-    transition-duration: .4s;
+    transition: transform 0.4s ease-out;
   }
 
   img[alt="SHS Building"] {
