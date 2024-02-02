@@ -10,3 +10,6 @@ dist-ssr
 *.local
 
 keys.json
+
+# Local Netlify folder
+.netlify
