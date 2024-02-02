@@ -73,7 +73,7 @@
         <template v-for="n in paginatedSSDataArray.length">
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
           <tr v-if="currentPage === 1">
-            <td>{{ n !== 7 ? (currentPage - 1) * 7 + n : "" }}.</td>
+            <td>{{ n < 7 ? `${(currentPage - 1) * 7 + n}.` : "" }}</td>
             <!-- eslint-disable-next-line vue/require-v-for-key  -->
             <td v-for="cellData in paginatedSSDataArray[n]">
               {{ cellData }}
@@ -82,7 +82,7 @@
           <!-- Else skip 1st row in array because is column names-->
           <!-- eslint-disable-next-line vue/require-v-for-key  -->
           <tr v-else-if="currentPage > 1">
-            <td>{{ (currentPage - 1) * 7 + (n - 1) }}.</td>
+            <td>{{ `${(currentPage - 1) * 7 + (n - 1)}.` }}</td>
             <!-- eslint-disable-next-line vue/require-v-for-key  -->
             <td v-for="cellData in paginatedSSDataArray[n - 1]">
               {{ cellData }}
