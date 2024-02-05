@@ -95,7 +95,7 @@
 
   <table-pagination
     class="pagination-component"
-    :numberOfPages="numberOfPagesOuter"
+    :propNumberOfPages="numberOfPagesOuter"
     :propCurrentPage="currentPage"
     @update="updateTableData"
   ></table-pagination>
@@ -129,11 +129,17 @@
 
   /**
    * Description - Gets selected sheet from form and formats it and
-   *   then fetches SS data Google Sheets REST API
+   *   then fetches SS data via Google Sheets REST API
    */
   const getSSData = async () => {
     loadingState = true;
     moveTitleImage();
+
+    // Check if currentPage is greater then 1. If so this is from
+    // a previous SS request so we should reset it to 1.
+    if (currentPage.value > 1) {
+      currentPage.value = 1;
+    }
 
     // Get the form element values and store them in our variables
     const form = document.getElementById("form");
@@ -165,6 +171,7 @@
     const ssURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/values/${escapedSheet}${ssRange}?key=${API_KEY}`;
 
     // Fetch SS data
+    loadingState = true;
     ssData.value = await fetchSSData(ssURL);
     loadingState = false;
 
@@ -221,6 +228,10 @@
     max-width: 1200px;
     overflow: auto;
     margin: 0 auto 20px;
+  }
+
+  img[alt="Loading Data"] {
+    width: 150px;
   }
 
   /* ------------Form stylings ------------- */

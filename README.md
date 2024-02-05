@@ -1,31 +1,26 @@
-# Vue 3 + Vite + vite-setup.cmd
+# Display Internship list for A-School w/Vue 3 + Vite
 
-&nbsp;&nbsp;This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more. It is designed to be cloned from the command line by the _vite-setup.cmd_ script.
-&nbsp;&nbsp;The _vite-setup.cmd_ script will download this file from Github and install all the dependencies. It will also add a remote repo for your new project and push it to Github. The added benefit of using vite-setup is that the **eslintrc.js** & **prettierrc.js** config files are also downloaded and configured with standard defaults.
+This project uses Vue 3 w/[Google Sheets API](https://developers.google.com/sheets/api/guides/concepts) to render a table in the browser.
 
-### vite-setup.cmd requirements
-&nbsp;&nbsp;[Github CLI](https://github.com/cli/cli) (e.g.,**gh**) is GitHub on the command line. It brings pull requests, issues, and other GitHub concepts to the terminal next to where you are already working with git and your code. It enables us to create a _remote repo_ of the cloned vite project. This is done in the ***vite-setup*** script so you dont have to create a remote repo of your new project yourself.
+### App requirements
 
-&nbsp;&nbsp;The easiest way to install _gh_ is thru chocolaty. At admin command line issue -
+&nbsp;&nbsp; You will need a _Google Cloud API key_ to make requests. To get a key you must setup a Google Cloud project. [See this link](https://developers.google.com/workspace/guides/get-started) for instructions on how to setup a project, enable the Google Sheets API for the project, and create an API key. To get started using simple Get requests to your Sheet see [create API key](https://developers.google.com/workspace/guides/create-credentials#api-key).
 
-_choco install gh_
+&nbsp;&nbsp;You will also need to create an .env file to store the API key. Since we use Vite to build the app we name the env var _VITE_API_SS_KEY_ and access it thru
+_import.meta.env.VITE_API_SS_KEY_.
 
-&nbsp;&nbsp;We also use the _npm-check-updates_ to update all packages to latest versions for each new project. To update all of our package dependencies in package.json (excluding our “vue” package), we would do the following:
+**_Important_** - Remember you must also setup the environment variable in the Netlify console when deploying the App.
 
-_ncu --upgrade_
+### Notes
 
-_npm install_
+We do not use the Javascript client library for Sheets in the app. We make simple /Get requests to the Sheets API and get JSON back which we then process and generate our table.
 
-&nbsp;&nbsp;Unfortunately as of this writing we also have to run _npm install vue@next_ seperately to insure latest version of vue is installed for the new project.
+You may also need to generate a _client_secret.json_ file which will contain an email address for your project's app e.g.,_"client_email": "google-api@senior-options.iam.gserviceaccount.com"_. This email you can then use when referencing who to share the Sheet with.
 
 ### Deploying to Netlify
-- ***npm run build***
 
-- ***netlify init*** (Follow the prompts to add a project to netlify.)
+- **_npm run build_**
 
-- ***netlify env:import .env*** (If necessary. You must then rebuild the project to add the environment 
-  variables to your project.)
+- **_netlify init_** (Follow the prompts to add a project to netlify.)
 
-
-
-
+- **_netlify env:import .env_** (If necessary. You must then rebuild the project to add the environment variables to your project.)

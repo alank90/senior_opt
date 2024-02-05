@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-container" aria-label="row pagination">
-    <ul v-if="numberOfPages > 1" class="pagination">
+    <ul v-if="propNumberOfPages > 1" class="pagination">
       <li
         class="page-item"
         aria-label="go to previous page"
@@ -14,7 +14,7 @@
 
       <!--- Generate page buttons -->
       <li
-        v-for="index in numberOfPages"
+        v-for="index in propNumberOfPages"
         :key="index"
         :aria-label="'go to page ' + index"
         class="page-item"
@@ -34,7 +34,7 @@
       <li
         class="page-item"
         :class="{
-          disabled: propCurrentPage === numberOfPages,
+          disabled: propCurrentPage === propNumberOfPages,
         }"
         aria-label="go to next page"
         @click="next()"
@@ -48,7 +48,7 @@
 <script setup>
   // ============ Variables ========================== //
   const props = defineProps({
-    numberOfPages: {
+    propNumberOfPages: {
       required: true,
       type: Number,
     },
@@ -73,7 +73,7 @@
   };
 
   const next = () => {
-    if (props.propCurrentPage >= props.numberOfPages) return;
+    if (props.propCurrentPage >= props.propNumberOfPages) return;
     emit("update", props.propCurrentPage + 1);
   };
   // ============= End  Methods ==================== //
