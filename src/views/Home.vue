@@ -30,7 +30,7 @@
       <option value="Retail/sales">Retail/sales</option>
     </select>
 
-    <label for="range">Sheet Range (optional):</label>
+    <label for="input-range1">Sheet Range (optional):</label>
     <input
       type="text"
       name="input-range1"
@@ -95,7 +95,7 @@
 
   <table-pagination
     class="pagination-component"
-    :propNumberOfPages="numberOfPagesOuter"
+    :propNumberOfPages="numberOfPagesOuterScope"
     :propCurrentPage="currentPage"
     @update="updateTableData"
   ></table-pagination>
@@ -105,7 +105,7 @@
   import { ref } from "vue";
   import { fetchSSData } from "../modules/fetchSSData.js";
   import TablePagination from "@/components/TablePagination.vue";
-  import { usePagination } from "../modules/usePagination.js";
+  import { createPagination } from "../modules/createPagination.js";
   import moveTitleImage from "@/modules/moveTitleImage.js";
 
   // ========= Variable Declarations ======================= //
@@ -119,7 +119,7 @@
   let loadingState = false;
   const rowsPerPage = ref(7);
   const currentPage = ref(1);
-  let numberOfPagesOuter = ref(null);
+  let numberOfPagesOuterScope = ref(0);
   let paginatedSSDataArray = ref(null);
   // ======== End Variable Declarations ==================== //
 
@@ -176,13 +176,13 @@
     loadingState = false;
 
     // Create pagination for the sheets table
-    const { paginatedArray, numberOfPages } = usePagination({
+    const { paginatedArray, numberOfPages } = createPagination({
       rowsPerPage,
       ssData,
       currentPage,
     });
     paginatedSSDataArray.value = paginatedArray.value;
-    numberOfPagesOuter.value = numberOfPages.value;
+    numberOfPagesOuterScope.value = numberOfPages.value;
   };
 
   /**
@@ -332,3 +332,4 @@
 
   /* -------- End Form stylings ------------ */
 </style>
+../modules/createPagination.js
