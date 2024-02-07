@@ -284,7 +284,7 @@ br.cb {
 }
 .clearfix,
 .ffluid {
-  *zoom: 1;
+  zoom: 1;
 }
 
 /* Nicole Sullivan zoom-fix hack [http://bit.ly/gpXFlK] */
@@ -298,8 +298,8 @@ br.cb {
   display: table-cell;
   float: none;
   width: auto !important;
-  *display: block;
-  *zoom: 1;
+  display: block;
+  zoom: 1;
   _position: relative;
   _left: -3px;
   _margin-right: -3px;
@@ -375,7 +375,7 @@ br.cb {
 }
 .ffluid {
   display: table-cell;
-  *display: block;
+  display: block;
   width: auto;
 }
 .cr {
@@ -404,20 +404,20 @@ br.cb {
 .vcenter {
   /* height of .vcenter element is required */
   overflow: hidden;
-  *position: relative;
+  position: relative;
   display: table;
-  *display: block;
+  display: block;
 }
 .vcenter .outer {
   display: table-cell;
   vertical-align: middle;
   width: 100%;
-  *position: absolute;
-  *top: 50%;
+  position: absolute;
+  top: 50%;
 }
 .vcenter .inner {
-  *position: relative;
-  *top: -50%;
+  position: relative;
+  top: -50%;
 }
 
 .hcenter {
