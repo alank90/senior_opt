@@ -4,30 +4,21 @@
 
   <form id="form">
     <label for="sheetNames">Select an Internship List to View:</label>
-    <select name="sheets" id="sheetNames" autofocus required>
-      <option value="">--Please choose a sheet--</option>
-      <option value="Animal Care">Animal Care</option>
-      <option value="Athletics">Athletics</option>
-      <option value="Finance/Realty">Finance/Realty</option>
-      <option value="Food Services/Baking">Food Services/Baking</option>
-      <option value="Legal/Non profit/outreach/religious">
-        Legal/Non profit/outreach/religious
-      </option>
-      <option value="Marketing/editorial/books">
-        Marketing/editorial/books
-      </option>
-      <option value="Mechanics/Enginering/Construction">
-        Mechanics/Enginering/Construction
-      </option>
-      <option value=" Media/art/design">Media/art/design</option>
-      <option value="Medical">Medical</option>
-      <option value="Misc.">Misc.</option>
-      <option value="Music/Drama/Dance">Music/Drama/Dance</option>
-      <option value="Other education/museum">Other education/museum</option>
-      <option value="Scarsdale School District">
-        Scarsdale School District
-      </option>
-      <option value="Retail/sales">Retail/sales</option>
+    <select
+      v-if="ssProperties"
+      name="sheets"
+      id="sheetNames"
+      autofocus
+      required
+    >
+      <template v-for="(sheetName, index) in ssProperties.data.sheets">
+        <!-- eslint-disable-next-line vue/require-v-for-key -->
+        <option value="" v-if="index === 0">--Please choose a sheet--</option>
+        <!-- eslint-disable-next-line vue/require-v-for-key -->
+        <option :value="sheetName.properties.title">
+          {{ sheetName.properties.title }}
+        </option>
+      </template>
     </select>
 
     <label for="input-range1">Sheet Range (optional):</label>
@@ -116,12 +107,23 @@
   let ssRange = "";
   const ssData = ref(null);
 
-  let loadingState = false;
+  let loadingState = ref(false);
   const rowsPerPage = ref(7);
   const currentPage = ref(1);
   let numberOfPagesOuterScope = ref(0);
   let paginatedSSDataArray = ref(null);
+  let ssProperties = ref(null);
   // ======== End Variable Declarations ==================== //
+
+  // Fetch the SS resource property which contains the sheet names in the SS
+  const ssPropertiesURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/?key=${API_KEY}`;
+
+  // Fetch SS properties data w/sheetnames
+  (async () => {
+    loadingState.value = true;
+    ssProperties.value = await fetchSSData(ssPropertiesURL);
+    loadingState.value = false;
+  })();
 
   // ================================================================= //
   // =========== Start Methods  Section ============================== //
@@ -132,7 +134,7 @@
    *   then fetches SS data via Google Sheets REST API
    */
   const getSSData = async () => {
-    loadingState = true;
+    loadingState.value = true;
     moveTitleImage();
 
     // Check if currentPage is greater then 1. If so this is from
@@ -152,11 +154,13 @@
     // ---------- Do some input validation ------------ //
     // Check if a sheet was chosen
     if (!sheet) {
+      loadingState.value = false;
       alert("Please pick a sheet to view.");
       return;
     }
     // Check input and see if its valid A1 notation
     if (!regex.test(a1NotationValue1)) {
+      loadingState.value = false;
       alert("Sorry. Invalid A1 notation used.");
       return;
     } else if (a1NotationValue1 === "") {
@@ -171,9 +175,9 @@
     const ssURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/values/${escapedSheet}${ssRange}?key=${API_KEY}`;
 
     // Fetch SS data
-    loadingState = true;
+    loadingState.value = true;
     ssData.value = await fetchSSData(ssURL);
-    loadingState = false;
+    loadingState.value = false;
 
     // Create pagination for the sheets table
     const { paginatedArray, numberOfPages } = createPagination({

@@ -6,16 +6,15 @@
  */
 
 export async function fetchSSData(url) {
-  // ======= Variable Declarations ============ //
-  let data = null;
-  
   try {
-    const res = await fetch(url);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not OK");
+    }
 
-    data = await res.json();
+    const data = await response.json();
+    return { data };
   } catch (e) {
     console.error("There was an error", e);
   }
-
-  return { data };
 }
