@@ -9,12 +9,25 @@
           disabled: propCurrentPage === 1,
         }"
       >
+        <span class="page-link">&#x23EE;</span>
+      </li>
+      <li
+        class="page-item"
+        aria-label="go to previous page"
+        @click="previous()"
+        :class="{
+          disabled: propCurrentPage === 1,
+        }"
+      >
         <span class="page-link">&laquo;</span>
       </li>
 
       <!--- Generate page buttons -->
       <li
-        v-for="index in propNumberOfPages"
+        v-for="index in range(
+          lowerBoundOfPagesToDisplay,
+          upperBoundOfPagesToDisplay
+        )"
         :key="index"
         :aria-label="'go to page ' + index"
         class="page-item"
@@ -41,11 +54,22 @@
       >
         <div class="page-link">&raquo;</div>
       </li>
+      <li
+        class="page-item"
+        :class="{
+          disabled: propCurrentPage === propNumberOfPages,
+        }"
+        aria-label="go to next page"
+        @click="updatePageNumberBounds()"
+      >
+        <div class="page-link">&#x23EF;</div>
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup>
+  import { ref } from "vue";
   // ============ Variables ========================== //
   const props = defineProps({
     propNumberOfPages: {
@@ -56,9 +80,17 @@
       required: true,
       type: Number,
     },
+    propRowsPerPage: {
+      required: true,
+      type: Number,
+    },
   });
 
   const emit = defineEmits(["update"]);
+
+  let lowerBoundOfPagesToDisplay = ref(1);
+  let upperBoundOfPagesToDisplay = ref(5);
+  let range = ref([]);
 
   // ======= End variable declarations ================= //
 
@@ -75,6 +107,22 @@
   const next = () => {
     if (props.propCurrentPage >= props.propNumberOfPages) return;
     emit("update", props.propCurrentPage + 1);
+  };
+
+  const updatePageNumberBounds = () => {
+    if (props.propCurrentPage === upperBoundOfPagesToDisplay.value) {
+      lowerBoundOfPagesToDisplay.value = upperBoundOfPagesToDisplay.value + 1;
+      upperBoundOfPagesToDisplay.value += 5;
+    }
+
+    console.log(
+      lowerBoundOfPagesToDisplay.value,
+      upperBoundOfPagesToDisplay.value
+    );
+  };
+
+  range.value = (start, end) => {
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   };
   // ============= End  Methods ==================== //
 </script>

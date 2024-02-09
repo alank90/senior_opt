@@ -88,6 +88,7 @@
     class="pagination-component"
     :propNumberOfPages="numberOfPagesOuterScope"
     :propCurrentPage="currentPage"
+    :propRowsPerPage="rowsPerPage"
     @update="updateTableData"
   ></table-pagination>
 </template>
