@@ -57,7 +57,7 @@
       <li
         class="page-item"
         :class="{
-          disabled: propCurrentPage === propNumberOfPages,
+          disabled: propCurrentPage >= propNumberOfPages - 5,
         }"
         aria-label="go to next page"
         @click="updatePageNumberBounds()"
@@ -86,7 +86,7 @@
     },
   });
 
-  const emit = defineEmits(["update"]);
+  const emit = defineEmits(["updatePage", "updateRange"]);
 
   let lowerBoundOfPagesToDisplay = ref(1);
   let upperBoundOfPagesToDisplay = ref(5);
@@ -96,25 +96,28 @@
 
   // ============= Methods ======================== //
   const setCurrentPage = (number) => {
-    emit("update", number);
+    emit("updatePage", number);
   };
 
   const previous = () => {
     if (props.propCurrentPage === 1) return;
-    emit("update", props.propCurrentPage - 1);
+    emit("updatePage", props.propCurrentPage - 1);
   };
 
   const next = () => {
     if (props.propCurrentPage >= props.propNumberOfPages) return;
-    emit("update", props.propCurrentPage + 1);
+    emit("updatePage", props.propCurrentPage + 1);
   };
 
   const updatePageNumberBounds = () => {
-    if (props.propCurrentPage === upperBoundOfPagesToDisplay.value) {
-      lowerBoundOfPagesToDisplay.value = upperBoundOfPagesToDisplay.value + 1;
+    emit("updateRange", upperBoundOfPagesToDisplay.value);
+
+    lowerBoundOfPagesToDisplay.value = upperBoundOfPagesToDisplay.value + 1;
+    if (lowerBoundOfPagesToDisplay.value + 5 > props.propNumberOfPages) {
+      upperBoundOfPagesToDisplay.value = props.propNumberOfPages;
+    } else {
       upperBoundOfPagesToDisplay.value += 5;
     }
-
     console.log(
       lowerBoundOfPagesToDisplay.value,
       upperBoundOfPagesToDisplay.value

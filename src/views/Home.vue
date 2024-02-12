@@ -89,7 +89,8 @@
     :propNumberOfPages="numberOfPagesOuterScope"
     :propCurrentPage="currentPage"
     :propRowsPerPage="rowsPerPage"
-    @update="updateTableData"
+    @update-page="updateTablePageData"
+    @update-range="updateTableRangeData"
   ></table-pagination>
 </template>
 
@@ -193,14 +194,31 @@
   /**
    * Description - Function triggered when page number clicked
    *  in page button from emit event update.
-   * @param - page number clicked on menu
+   * @param( @integer )- page number or next page, next page range clicked on menu
    */
-  const updateTableData = (number) => {
+  const updateTablePageData = (number) => {
     paginatedSSDataArray.value = ssData.value.data.values.slice(
       (number - 1) * rowsPerPage.value,
       number * rowsPerPage.value
     );
+
     currentPage.value = number;
+  };
+
+  /**
+   * Description - Funcion triggered when the change page range >| button
+   *  is clicked
+   *  @param  ( @integer )  - The current upperBoundsPageNumberToDisplay value
+   */
+
+  const updateTableRangeData = (upperBoundPageNumber) => {
+    console.log("In updateRangeData", upperBoundPageNumber);
+    paginatedSSDataArray.value = ssData.value.data.values.slice(
+      upperBoundPageNumber * rowsPerPage.value,
+      (upperBoundPageNumber + 1) * rowsPerPage.value
+    );
+
+    currentPage.value = upperBoundPageNumber + 1;
   };
 
   // ================================================================= //
