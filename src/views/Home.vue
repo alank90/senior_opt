@@ -89,6 +89,7 @@
     :propNumberOfPages="numberOfPagesOuterScope"
     :propCurrentPage="currentPage"
     :propRowsPerPage="rowsPerPage"
+    :propSheet="sheet"
     @update-page="updateTablePageData"
     @update-range="updateTableRangeData"
   ></table-pagination>
@@ -105,7 +106,7 @@
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
 
   const ssID = "1H6gVpXqtmHJBHs-ZZiEHDraxGsC0KbX9owZdt6AzsF8";
-  let sheet = "";
+  let sheet = ref("");
   let ssRange = "";
   const ssData = ref(null);
 
@@ -115,6 +116,7 @@
   let numberOfPagesOuterScope = ref(0);
   let paginatedSSDataArray = ref(null);
   let ssProperties = ref(null);
+
   // ======== End Variable Declarations ==================== //
 
   // Fetch the SS resource property which contains the sheet names in the SS
@@ -148,6 +150,7 @@
     // Get the form element values and store them in our variables
     const form = document.getElementById("form");
     const formData = new FormData(form);
+    // eslint-disable-next-line vue/no-ref-as-operand
     sheet = formData.get("sheets");
     const a1NotationValue1 = formData.get("input-range1");
     const a1NotationValue2 = formData.get("input-range2");
@@ -155,6 +158,7 @@
 
     // ---------- Do some input validation ------------ //
     // Check if a sheet was chosen
+    // eslint-disable-next-line vue/no-ref-as-operand
     if (!sheet) {
       loadingState.value = false;
       alert("Please pick a sheet to view.");
@@ -208,11 +212,10 @@
   /**
    * Description - Funcion triggered when the change page range >| button
    *  is clicked
-   *  @param  ( @integer )  - The current upperBoundsPageNumberToDisplay value
+   *  @param {integer}  - The current upperBoundsPageNumberToDisplay value
    */
 
   const updateTableRangeData = (upperBoundPageNumber) => {
-    console.log("In updateRangeData", upperBoundPageNumber);
     paginatedSSDataArray.value = ssData.value.data.values.slice(
       upperBoundPageNumber * rowsPerPage.value,
       (upperBoundPageNumber + 1) * rowsPerPage.value

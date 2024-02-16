@@ -3,10 +3,11 @@
     <ul v-if="propNumberOfPages > 1" class="pagination">
       <li
         class="page-item"
-        aria-label="go to previous page"
-        @click="previous()"
+        aria-label="go to previous page range"
+        data-info="previous"
+        @click="updatePageNumberBounds()"
         :class="{
-          disabled: propCurrentPage === 1,
+          disabled: lowerBoundOfPagesToDisplay === 1,
         }"
       >
         <span class="page-link">&#x23EE;</span>
@@ -16,7 +17,7 @@
         aria-label="go to previous page"
         @click="previous()"
         :class="{
-          disabled: propCurrentPage === 1,
+          disabled: lowerBoundOfPagesToDisplay === props.propCurrentPage,
         }"
       >
         <span class="page-link">&laquo;</span>
@@ -44,22 +45,31 @@
       </li>
       <!-- End generate page buttons -->
 
+      <div
+        v-if="upperBoundOfPagesToDisplay < props.propNumberOfPages"
+        class="morePages"
+      >
+        ...
+      </div>
+
       <li
         class="page-item"
         :class="{
-          disabled: propCurrentPage === propNumberOfPages,
+          disabled: propCurrentPage === upperBoundOfPagesToDisplay,
         }"
         aria-label="go to next page"
         @click="next()"
       >
         <div class="page-link">&raquo;</div>
       </li>
+
       <li
         class="page-item"
+        data-info="next"
         :class="{
-          disabled: propCurrentPage >= propNumberOfPages - 5,
+          disabled: upperBoundOfPagesToDisplay >= propNumberOfPages,
         }"
-        aria-label="go to next page"
+        aria-label="go to next page range"
         @click="updatePageNumberBounds()"
       >
         <div class="page-link">&#x23EF;</div>
@@ -69,7 +79,7 @@
 </template>
 
 <script setup>
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
   // ============ Variables ========================== //
   const props = defineProps({
     propNumberOfPages: {
@@ -84,12 +94,16 @@
       required: true,
       type: Number,
     },
+    propSheet: {
+      required: true,
+      type: String,
+    },
   });
 
   const emit = defineEmits(["updatePage", "updateRange"]);
 
   let lowerBoundOfPagesToDisplay = ref(1);
-  let upperBoundOfPagesToDisplay = ref(5);
+  let upperBoundOfPagesToDisplay = ref(0);
   let range = ref([]);
 
   // ======= End variable declarations ================= //
@@ -98,18 +112,23 @@
   const setCurrentPage = (number) => {
     emit("updatePage", number);
   };
+  // --------------------------------------------------------------------- //
 
   const previous = () => {
-    if (props.propCurrentPage === 1) return;
+    if (lowerBoundOfPagesToDisplay.value === props.propCurrentPage) return;
     emit("updatePage", props.propCurrentPage - 1);
   };
+  // --------------------------------------------------------------------- //
 
   const next = () => {
-    if (props.propCurrentPage >= props.propNumberOfPages) return;
+    if (props.propCurrentPage >= upperBoundOfPagesToDisplay.value) return;
     emit("updatePage", props.propCurrentPage + 1);
   };
+  // --------------------------------------------------------------------- //
 
-  const updatePageNumberBounds = () => {
+  const updatePageNumberBounds = (event) => {
+    console.log(event);
+    if (upperBoundOfPagesToDisplay.value === props.propNumberOfPages) return;
     emit("updateRange", upperBoundOfPagesToDisplay.value);
 
     lowerBoundOfPagesToDisplay.value = upperBoundOfPagesToDisplay.value + 1;
@@ -118,15 +137,24 @@
     } else {
       upperBoundOfPagesToDisplay.value += 5;
     }
-    console.log(
-      lowerBoundOfPagesToDisplay.value,
-      upperBoundOfPagesToDisplay.value
-    );
   };
+  // --------------------------------------------------------------------- //
 
   range.value = (start, end) => {
     return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   };
+
+  // --------- Watch effects ----------------------------------------------------------- //
+  // The watch function updates the page range
+  watch(
+    () => props.propNumberOfPages,
+    (newUpperBoundValueToDisplay) => {
+      newUpperBoundValueToDisplay <= 5
+        ? (upperBoundOfPagesToDisplay.value = newUpperBoundValueToDisplay)
+        : (upperBoundOfPagesToDisplay.value = 5);
+    }
+  );
+
   // ============= End  Methods ==================== //
 </script>
 
@@ -189,5 +217,11 @@
   }
   .disabled .page-link {
     background-color: #f9fafb;
+  }
+
+  .morePages {
+    vertical-align: bottom;
+    font-weight: 700;
+    font-size: 1.4rem;
   }
 </style>
