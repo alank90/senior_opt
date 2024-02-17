@@ -5,7 +5,7 @@
         class="page-item"
         aria-label="go to previous page range"
         data-info="previous"
-        @click="updatePageNumberBounds()"
+        @click="updatePageNumberBounds"
         :class="{
           disabled: lowerBoundOfPagesToDisplay === 1,
         }"
@@ -15,7 +15,7 @@
       <li
         class="page-item"
         aria-label="go to previous page"
-        @click="previous()"
+        @click="previous"
         :class="{
           disabled: lowerBoundOfPagesToDisplay === props.propCurrentPage,
         }"
@@ -58,7 +58,7 @@
           disabled: propCurrentPage === upperBoundOfPagesToDisplay,
         }"
         aria-label="go to next page"
-        @click="next()"
+        @click="next"
       >
         <div class="page-link">&raquo;</div>
       </li>
@@ -70,7 +70,7 @@
           disabled: upperBoundOfPagesToDisplay >= propNumberOfPages,
         }"
         aria-label="go to next page range"
-        @click="updatePageNumberBounds()"
+        @click="updatePageNumberBounds"
       >
         <div class="page-link">&#x23EF;</div>
       </li>
@@ -125,17 +125,56 @@
     emit("updatePage", props.propCurrentPage + 1);
   };
   // --------------------------------------------------------------------- //
-
+  /**
+   *  Description - Function to update page range on table
+   * @param {event} event object triggered by click
+   * @emit - emits event @updateRange which is listened for on the component in
+   *  Home.vue
+   */
   const updatePageNumberBounds = (event) => {
-    console.log(event);
-    if (upperBoundOfPagesToDisplay.value === props.propNumberOfPages) return;
-    emit("updateRange", upperBoundOfPagesToDisplay.value);
+    // Which update page range button was pressed, next or previous and then
+    // perform appropriate actions
+    const prev_nextButtonClicked = event.currentTarget.dataset.info;
+    // If at the start or end of a table just return from the function
+    if (
+      upperBoundOfPagesToDisplay.value === props.propNumberOfPages &&
+      prev_nextButtonClicked === "next"
+    ) {
+      return;
+    } else if (
+      lowerBoundOfPagesToDisplay.value === 1 &&
+      prev_nextButtonClicked === "previous"
+    ) {
+      return;
+    }
 
-    lowerBoundOfPagesToDisplay.value = upperBoundOfPagesToDisplay.value + 1;
-    if (lowerBoundOfPagesToDisplay.value + 5 > props.propNumberOfPages) {
-      upperBoundOfPagesToDisplay.value = props.propNumberOfPages;
+    // Depending on which button was clicked (<<| or |>>) take the appropriate action
+    if (prev_nextButtonClicked === "next") {
+      emit(
+        "updateRange",
+        upperBoundOfPagesToDisplay.value,
+        prev_nextButtonClicked
+      );
+
+      lowerBoundOfPagesToDisplay.value = upperBoundOfPagesToDisplay.value + 1;
+      if (lowerBoundOfPagesToDisplay.value + 5 > props.propNumberOfPages) {
+        upperBoundOfPagesToDisplay.value = props.propNumberOfPages;
+      } else {
+        upperBoundOfPagesToDisplay.value += 5;
+      }
+    } else if (prev_nextButtonClicked === "previous") {
+      upperBoundOfPagesToDisplay.value = lowerBoundOfPagesToDisplay.value - 1;
+      lowerBoundOfPagesToDisplay.value = lowerBoundOfPagesToDisplay.value - 5;
+
+      emit(
+        "updateRange",
+        lowerBoundOfPagesToDisplay.value,
+        prev_nextButtonClicked
+      );
     } else {
-      upperBoundOfPagesToDisplay.value += 5;
+      console.log(
+        "error: in TablePagination.vue updatePageNumberBounds function."
+      );
     }
   };
   // --------------------------------------------------------------------- //

@@ -210,18 +210,39 @@
   };
 
   /**
-   * Description - Funcion triggered when the change page range >| button
+   * Description - Funcion triggered when the change page range <<| or >>| button
    *  is clicked
-   *  @param {integer}  - The current upperBoundsPageNumberToDisplay value
+   *  @param ( @integer )  - The current upperBoundsPageNumberToDisplay value
+   *  @calledby ( @emit_event ) - @update-range
    */
 
-  const updateTableRangeData = (upperBoundPageNumber) => {
+  const updateTableRangeData = (
+    upper_or_lowerPageBoundaryValue,
+    prev_nextButtonClicked
+  ) => {
+    console.log(prev_nextButtonClicked);
+    // Check edge case if at the start of the table
+    if (upper_or_lowerPageBoundaryValue === 1) {
+      upper_or_lowerPageBoundaryValue = 0;
+    }
+
+    // Slice the ssData array into the correct portion to display and
+    // this will match the page range numbers now being displayed
+    // from the TablePagination.vue component.
     paginatedSSDataArray.value = ssData.value.data.values.slice(
-      upperBoundPageNumber * rowsPerPage.value,
-      (upperBoundPageNumber + 1) * rowsPerPage.value
+      upper_or_lowerPageBoundaryValue * rowsPerPage.value,
+      (upper_or_lowerPageBoundaryValue + 1) * rowsPerPage.value
     );
 
-    currentPage.value = upperBoundPageNumber + 1;
+    currentPage.value = upper_or_lowerPageBoundaryValue + 1;
+
+   /*  if (prev_nextButtonClicked === "next") {
+      currentPage.value = upper_or_lowerPageBoundaryValue + 1;
+    } else if (prev_nextButtonClicked === "previous") {
+      console.log(prev_nextButtonClicked);
+
+     
+    } */
   };
 
   // ================================================================= //
