@@ -4,12 +4,13 @@ This project uses Vue 3 w/[Google Sheets API](https://developers.google.com/shee
 
 ### App requirements
 
-&nbsp;&nbsp; You will need a _Google Cloud API key_ to make requests. To get a key you must setup a Google Cloud project. [See this link](https://developers.google.com/workspace/guides/get-started) for instructions on how to setup a project, enable the Google Sheets API for the project, and create an API key. To get started using simple Get requests to your Sheet see [create API key](https://developers.google.com/workspace/guides/create-credentials#api-key).
+&nbsp;&nbsp; You will need a _Google Cloud API key_ to make requests. To get a key you must setup a Google Cloud project. [See this link](https://developers.google.com/workspace/guides/get-started) for instructions on how to setup a project, enable the Google Sheets API for the project, and create an API key. To get started using simple Get requests to your Sheet see [create API key](https://developers.google.com/workspace/guides/create-credentials#api-key). You will also need the Google sheets ID number, which you can get from the SS's URL.
 
 &nbsp;&nbsp;You will also need to create an .env file to store the API key. Since we use Vite to build the app we name the env var _VITE_API_SS_KEY_ and access it thru
-_import.meta.env.VITE_API_SS_KEY_.
+_import.meta.env.VITE_API_SS_KEY_. You must also store the Sheets ID in the .env file
+under the key _VITE_SHEETS_ID_ and access it thru _import.meta.env.VITE_SHEETS_ID_.
 
-**_Important_** - Remember you must also setup the environment variable in the Netlify console when deploying the App.
+**_Important_** - Remember you must also setup the environment variables in the Netlify console when deploying the App.
 
 ### Notes
 

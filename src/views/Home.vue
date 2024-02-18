@@ -105,7 +105,7 @@
   // ========= Variable Declarations ======================= //
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
 
-  const ssID = "1H6gVpXqtmHJBHs-ZZiEHDraxGsC0KbX9owZdt6AzsF8";
+  const ssID = import.meta.env.VITE_SHEETS_ID;
   let sheet = ref("");
   let ssRange = "";
   const ssData = ref(null);
@@ -196,7 +196,7 @@
   };
 
   /**
-   * Description - Function triggered when page number clicked
+   * @Description - Function triggered when page number clicked
    *  in page button from emit event update.
    * @param( @integer )- page number or next page, next page range clicked on menu
    */
@@ -210,9 +210,10 @@
   };
 
   /**
-   * Description - Funcion triggered when the change page range <<| or >>| button
+   * @Description - Funcion triggered when the change page range <<| or >>| button
    *  is clicked
-   *  @param ( @integer )  - The current upperBoundsPageNumberToDisplay value
+   *  @param ( @integer )  - The current upperBoundsPageNumberToDisplay or lower
+   *  BoundsPageNumberToDispaly value depending on whether prev/next was clicked
    *  @calledby ( @emit_event ) - @update-range
    */
 
@@ -220,7 +221,6 @@
     upper_or_lowerPageBoundaryValue,
     prev_nextButtonClicked
   ) => {
-    console.log(prev_nextButtonClicked);
     // Check edge case if at the start of the table
     if (upper_or_lowerPageBoundaryValue === 1) {
       upper_or_lowerPageBoundaryValue = 0;
@@ -234,15 +234,19 @@
       (upper_or_lowerPageBoundaryValue + 1) * rowsPerPage.value
     );
 
-    currentPage.value = upper_or_lowerPageBoundaryValue + 1;
-
-   /*  if (prev_nextButtonClicked === "next") {
+    if (prev_nextButtonClicked === "next") {
       currentPage.value = upper_or_lowerPageBoundaryValue + 1;
     } else if (prev_nextButtonClicked === "previous") {
-      console.log(prev_nextButtonClicked);
-
-     
-    } */
+      if (upper_or_lowerPageBoundaryValue === 0) {
+        currentPage.value = 1;
+      } else {
+        currentPage.value = upper_or_lowerPageBoundaryValue;
+      }
+    } else {
+      console.log(
+        "error: Error in function updateTableRangeData in Home.vue component."
+      );
+    }
   };
 
   // ================================================================= //

@@ -72,7 +72,7 @@
         aria-label="go to next page range"
         @click="updatePageNumberBounds"
       >
-        <div class="page-link">&#x23EF;</div>
+        <div class="page-link">&#9197;</div>
       </li>
     </ul>
   </div>
@@ -126,13 +126,14 @@
   };
   // --------------------------------------------------------------------- //
   /**
-   *  Description - Function to update page range on table
+   * @Description - Function to update page range on table and emit an event to
+   *  update the slice of ssData array to display
    * @param {event} event object triggered by click
    * @emit - emits event @updateRange which is listened for on the component in
    *  Home.vue
    */
   const updatePageNumberBounds = (event) => {
-    // Which update page range button was pressed, next or previous and then
+    // Check which update page-range button was pressed, next or previous and then
     // perform appropriate actions
     const prev_nextButtonClicked = event.currentTarget.dataset.info;
     // If at the start or end of a table just return from the function
@@ -194,7 +195,7 @@
     }
   );
 
-  // ============= End  Methods ==================== //
+  // ==================== End  Methods ========================================== //
 </script>
 
 <style scoped>
@@ -256,6 +257,7 @@
   }
   .disabled .page-link {
     background-color: #f9fafb;
+    color: #666b8560;
   }
 
   .morePages {
