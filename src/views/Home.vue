@@ -104,7 +104,6 @@
 
   // ========= Variable Declarations ======================= //
   const API_KEY = import.meta.env.VITE_API_SS_KEY;
-
   const ssID = import.meta.env.VITE_SHEETS_ID;
   let sheet = ref("");
   let ssRange = "";
@@ -150,6 +149,9 @@
     // Get the form element values and store them in our variables
     const form = document.getElementById("form");
     const formData = new FormData(form);
+    // Note - The formData.get() seems to unRef the sheet variable. But because
+    // the template for the options element has already been rendered it doesn't
+    // effect the app. That is why we don't use sheet.value, it raises an error then.
     // eslint-disable-next-line vue/no-ref-as-operand
     sheet = formData.get("sheets");
     const a1NotationValue1 = formData.get("input-range1");
