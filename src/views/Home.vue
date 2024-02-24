@@ -149,19 +149,14 @@
     // Get the form element values and store them in our variables
     const form = document.getElementById("form");
     const formData = new FormData(form);
-    // Note - The formData.get() seems to unRef the sheet variable. But because
-    // the template for the options element has already been rendered it doesn't
-    // effect the app. That is why we don't use sheet.value, it raises an error then.
-    // eslint-disable-next-line vue/no-ref-as-operand
-    sheet = formData.get("sheets");
+    sheet.value = formData.get("sheets");
     const a1NotationValue1 = formData.get("input-range1");
     const a1NotationValue2 = formData.get("input-range2");
     const regex = /^(?:[A-Z,a-z]{1,3}[0-9]{1,7})?$/;
 
     // ---------- Do some input validation ------------ //
     // Check if a sheet was chosen
-    // eslint-disable-next-line vue/no-ref-as-operand
-    if (!sheet) {
+    if (!sheet.value) {
       loadingState.value = false;
       alert("Please pick a sheet to view.");
       return;
@@ -179,7 +174,7 @@
     // -------- End input validation ------------------ //
 
     // Escape URI if special characters in the sheet name.
-    const escapedSheet = encodeURIComponent(sheet);
+    const escapedSheet = encodeURIComponent(sheet.value);
     const ssURL = `https://sheets.googleapis.com/v4/spreadsheets/${ssID}/values/${escapedSheet}${ssRange}?key=${API_KEY}`;
 
     // Fetch SS data
