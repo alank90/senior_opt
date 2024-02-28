@@ -7,13 +7,13 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.19",
+    "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^1.6.2",
     "@vitejs/plugin-vue": "^5.0.4",
-    "@vue/compiler-sfc": "^3.4.19",
+    "@vue/compiler-sfc": "^3.4.21",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.22.0",
