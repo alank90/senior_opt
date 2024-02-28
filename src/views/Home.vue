@@ -93,12 +93,17 @@
     @update-page="updateTablePageData"
     @update-range="updateTableRangeData"
   ></table-pagination>
+
+  <scroll-to-top></scroll-to-top>
+  
 </template>
 
 <script setup>
+  // ------------ Imports -------------------------------------- //
   import { ref } from "vue";
   import { fetchSSData } from "../modules/fetchSSData.js";
   import TablePagination from "@/components/TablePagination.vue";
+  import scrollToTop from "@/components/scroll-to-top.vue";
   import { createPagination } from "../modules/createPagination.js";
   import moveTitleImage from "@/modules/moveTitleImage.js";
 
@@ -203,6 +208,11 @@
       number * rowsPerPage.value
     );
 
+    window.scrollTo({
+      left: 0,
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
     currentPage.value = number;
   };
 
@@ -244,6 +254,12 @@
         "error: Error in function updateTableRangeData in Home.vue component."
       );
     }
+
+    window.scrollTo({
+      left: 0,
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   // ================================================================= //

@@ -104,7 +104,7 @@
 
   let lowerBoundOfPagesToDisplay = ref(1);
   let upperBoundOfPagesToDisplay = ref(0);
-  let range = ref([]);
+  let range = ref(null);
 
   // ======= End variable declarations ================= //
 
@@ -180,6 +180,7 @@
   };
   // --------------------------------------------------------------------- //
 
+  // Create an array of indices to use in the v-for loop for generating button numbers
   range.value = (start, end) => {
     return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   };
